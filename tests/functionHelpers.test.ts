@@ -4,13 +4,15 @@ import {
   fromPromise,
   fromThrowable,
 } from "./../src/functionHelpers";
-import { Ok, Err } from "./../src/core";
 
 describe("fromThrowable", () => {
   it("should return Ok when function does not throw", () => {
     const result = fromThrowable(() => 42);
 
-    expect(result).toEqual(Ok(42));
+    expect(result).toMatchObject({
+      ok: true,
+      value: 42,
+    });
   });
 
   it("should return Err when function throws", () => {
@@ -18,7 +20,15 @@ describe("fromThrowable", () => {
       throw new Error("boom");
     });
 
-    expect(result).toEqual(Err(new Error("boom")));
+    expect(result.ok).toBe(false);
+    expect(result).toMatchObject({
+      ok: false,
+      error: expect.any(Error),
+    });
+
+    if (!result.ok) {
+      expect(result.error.message).toBe("boom");
+    }
   });
 
   it("should map error when mapError is provided", () => {
@@ -29,7 +39,11 @@ describe("fromThrowable", () => {
       (err) => new Error(`mapped: ${(err as Error).message}`),
     );
 
-    expect(result).toEqual(Err(new Error("mapped: boom")));
+    expect(result.ok).toBe(false);
+
+    if (!result.ok) {
+      expect(result.error.message).toBe("mapped: boom");
+    }
   });
 });
 
@@ -37,13 +51,20 @@ describe("fromPromise", () => {
   it("should return Ok when promise resolves", async () => {
     const result = await fromPromise(Promise.resolve(100));
 
-    expect(result).toEqual(Ok(100));
+    expect(result).toMatchObject({
+      ok: true,
+      value: 100,
+    });
   });
 
   it("should return Err when promise rejects", async () => {
     const result = await fromPromise(Promise.reject(new Error("fail")));
 
-    expect(result).toEqual(Err(new Error("fail")));
+    expect(result.ok).toBe(false);
+
+    if (!result.ok) {
+      expect(result.error.message).toBe("fail");
+    }
   });
 
   it("should map error when mapError is provided", async () => {
@@ -52,7 +73,11 @@ describe("fromPromise", () => {
       (err) => new Error(`mapped: ${err}`),
     );
 
-    expect(result).toEqual(Err(new Error("mapped: raw error")));
+    expect(result.ok).toBe(false);
+
+    if (!result.ok) {
+      expect(result.error.message).toBe("mapped: raw error");
+    }
   });
 });
 
@@ -60,24 +85,44 @@ describe("fromNullable", () => {
   it("should return Ok when value is not null or undefined", () => {
     const result = fromNullable("hello", "error");
 
-    expect(result).toEqual(Ok("hello"));
+    expect(result).toMatchObject({
+      ok: true,
+      value: "hello",
+    });
   });
 
   it("should return Err when value is null", () => {
     const result = fromNullable(null, "not found");
 
-    expect(result).toEqual(Err("not found"));
+    expect(result).toMatchObject({
+      ok: false,
+      error: "not found",
+    });
   });
 
   it("should return Err when value is undefined", () => {
     const result = fromNullable(undefined, "missing");
 
-    expect(result).toEqual(Err("missing"));
+    expect(result).toMatchObject({
+      ok: false,
+      error: "missing",
+    });
   });
 
   it("should not treat falsy values as null", () => {
-    expect(fromNullable(0, "err")).toEqual(Ok(0));
-    expect(fromNullable("", "err")).toEqual(Ok(""));
-    expect(fromNullable(false, "err")).toEqual(Ok(false));
+    expect(fromNullable(0, "err")).toMatchObject({
+      ok: true,
+      value: 0,
+    });
+
+    expect(fromNullable("", "err")).toMatchObject({
+      ok: true,
+      value: "",
+    });
+
+    expect(fromNullable(false, "err")).toMatchObject({
+      ok: true,
+      value: false,
+    });
   });
 });

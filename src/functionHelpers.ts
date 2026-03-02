@@ -37,7 +37,7 @@ export const fromThrowable = <T, E = Error>(
     return Ok<T>(fn());
   } catch (error: unknown) {
     const mapped = mapError ? mapError(error) : (error as E);
-    return Err<E>(mapped);
+    return Err<T, E>(mapped);
   }
 };
 
@@ -71,7 +71,7 @@ export const fromPromise = async <T, E = Error>(
     return Ok<T>(value);
   } catch (error: unknown) {
     const mapped = mapError ? mapError(error) : (error as E);
-    return Err<E>(mapped);
+    return Err<T, E>(mapped);
   }
 };
 
@@ -98,4 +98,4 @@ export const fromPromise = async <T, E = Error>(
 export const fromNullable = <T, E>(
   value: T | null | undefined,
   error: E,
-): Result<T, E> => (value == null ? Err<E>(error) : Ok<T>(value));
+): Result<T, E> => (value == null ? Err<T, E>(error) : Ok<T>(value));
