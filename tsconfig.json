@@ -24,6 +24,7 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Interop */
+    "ignoreDeprecations": "6.0",
     "esModuleInterop": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
