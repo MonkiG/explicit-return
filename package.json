@@ -1,6 +1,6 @@
 {
   "name": "@monkig/explicit-return",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An Error as types kind of library",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
