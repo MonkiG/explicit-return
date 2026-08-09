@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
-    /* Output */
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
 
-    /* Strictness */
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -19,20 +18,14 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
 
-    /* Safety */
     "useUnknownInCatchVariables": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Interop */
-    "ignoreDeprecations": "6.0",
-    "esModuleInterop": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
 
-    /* Performance */
     "incremental": true,
 
-    /* Emit behavior */
     "removeComments": false,
     "isolatedModules": true
   },

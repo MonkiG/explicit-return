@@ -1,14 +1,24 @@
 {
-  "name": "explicit-return",
+  "name": "@monkig/explicit-return",
   "version": "0.0.1",
-  "description": "",
+  "description": "An Error as types kind of library",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "vitest"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ramón Hernández (MonkiG)",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
@@ -20,5 +30,9 @@
     "typescript": "5.9.3",
     "typescript-eslint": "^8.56.1",
     "vitest": "4.0.18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MonkiG/explicit-return.git"
   }
 }
